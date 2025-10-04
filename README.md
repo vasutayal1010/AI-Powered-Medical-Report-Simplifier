@@ -15,7 +15,7 @@ It supports both **text input** and **image uploads**, applying OCR, normalizati
 
 
 
-##  1. Project Description & Features
+#  1. Project Description & Features
 
 This backend service is designed to process medical lab reports and transform them into a standardized, patient-friendly format. It can accept reports as either direct text input or as image files (e.g., a photo of a printed report), making it flexible for various data sources.
 
@@ -206,6 +206,7 @@ npm start
 
 # 6. Database Schema 
 ```json
+{
 _id: ObjectId('68de8611a4d2558f1bf3794f')
 tests: Array (2)
     0: Object
@@ -231,6 +232,7 @@ status: "ok"
 createdAt: 2025-10-02T14:02:57.263+00:00
 updatedAt: 2025-10-02T14:02:57.263+00:00
 __v: 0
+}
 ```
 
 # Images : 
