@@ -16,39 +16,81 @@ const getRefRange = (testName) => {
 };
 
 
+// export const normalizeText = (text) => {
+//   // CORRECTED LOGIC: Process text line by line to prevent greedy matching across newlines.
+//   const lines = text.split("\n");
+//   const tests = [];
+//   // This regex is designed to find a result within a single line.
+//   const regex =
+//     /([\w\s-]+?):\s*([\d,.]+)\s*([a-zA-Z\/%µL\s]+?)\s*\((High|Low|Normal)\)/i;
+
+//   for (const line of lines) {
+//     const match = line.match(regex);
+
+//     if (match) {
+//       const status = match[4].toLowerCase();
+//       if (status === "normal") {
+//         continue; // Skip normal results
+//       }
+
+//       const name = match[1].trim();
+//       const value = parseFloat(match[2].replace(/,/g, ""));
+//       const unit = match[3].trim().replace("/uL", "/µL");
+
+//       const normalizedTest = {
+//         name: name,
+//         value: value,
+//         unit: unit,
+//         status: status,
+//         ref_range: getRefRange(name),
+//       };
+//       tests.push(normalizedTest);
+//     }
+//   }
+//   return tests;
+// };
+
 export const normalizeText = (text) => {
-  // CORRECTED LOGIC: Process text line by line to prevent greedy matching across newlines.
   const lines = text.split("\n");
   const tests = [];
-  // This regex is designed to find a result within a single line.
+
+  // More robust regex
   const regex =
-    /([\w\s-]+?):\s*([\d,.]+)\s*([a-zA-Z\/%µL\s]+?)\s*\((High|Low|Normal)\)/i;
+    /([\w\s-]+)\s*[:\-]?\s*([\d,.]+)\s*([a-zA-Z\/%µL]+)?\s*(?:\((High|Low|Normal)\)|\b(H|L|N)\b)?/i;
 
   for (const line of lines) {
     const match = line.match(regex);
+    if (!match) continue;
 
-    if (match) {
-      const status = match[4].toLowerCase();
-      if (status === "normal") {
-        continue; // Skip normal results
-      }
+    let rawValue = match[2];
+    let value = parseFloat(rawValue.replace(/,/g, ""));
+    if (isNaN(value)) continue; // skip bad matches
 
-      const name = match[1].trim();
-      const value = parseFloat(match[2].replace(/,/g, ""));
-      const unit = match[3].trim().replace("/uL", "/µL");
+    // Normalize status
+    let status = (match[4] || match[5] || "").toLowerCase();
+    if (status === "h") status = "high";
+    if (status === "l") status = "low";
+    if (status === "n" || status === "normal") status = "normal";
 
-      const normalizedTest = {
-        name: name,
-        value: value,
-        unit: unit,
-        status: status,
-        ref_range: getRefRange(name),
-      };
-      tests.push(normalizedTest);
-    }
+    if (!status || status === "normal") continue; // skip if no status or normal
+
+    const name = match[1].trim();
+    const unit = (match[3] || "").trim().replace("/uL", "/µL");
+
+    // Final guard: only push valid entries
+    if (!name || !value || !status) continue;
+
+    tests.push({
+      name,
+      value,
+      unit: unit || null,
+      status,
+      ref_range: getRefRange(name),
+    });
   }
   return tests;
 };
+
 
 export const generateSummary = (tests) => {
   if (!tests || tests.length === 0) {
@@ -119,6 +161,7 @@ export const uploadAndProcessReport = async (req, res) => {
 };
 
 export const processTextReport = async (req, res) => {
+  console.log("Hello vasu");
   const { text } = req.body;
 
   if (!text) {

@@ -237,8 +237,13 @@ npm start
 
 # Images : 
 
-## API Testing :
+## Text Input :
+
 ![Screenshot](images/Screenshot%20(211).png)
+
+## Image Input :
+
+![Screenshot](images/Screenshot%20(213).png)
 
 ## Database Schema :
 ![Screenshot](images/Screenshot%20(212).png)
