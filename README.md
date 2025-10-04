@@ -243,6 +243,10 @@ npm start
 
 ## Image Input :
 
+### Input Image -
+![Screenshot](images/Screenshot%20(209).png)
+
+### Output Response -  
 ![Screenshot](images/Screenshot%20(213).png)
 
 ## Database Schema :
