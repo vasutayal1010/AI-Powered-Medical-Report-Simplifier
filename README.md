@@ -207,8 +207,8 @@ npm start
 # 6. Database Schema 
 ```json
 {
-"_id": ObjectId('68de8611a4d2558f1bf3794f')
-"tests": Array (2)
+"_id": "ObjectId('68de8611a4d2558f1bf3794f')"
+"tests":" Array (2)
     0: Object
       name: "Hemoglobin"
       value: 10.2
@@ -216,22 +216,22 @@ npm start
       status: "low"
       ref_range : Object
         low: 12
-        high: 15
+        high: 15"
 
-    1: Object
+    1: "Object
       name: "WBC"
       value: 11220
       unit: "/µL"
       status: "high"
       ref_range : Object
         low: 4000
-        high: 11000
+        high: 11000"
 
 "summary": "low Hemoglobin and high WBC count."
 "status": "ok"
-"createdAt": 2025-10-02T14:02:57.263+00:00
-"updatedAt": 2025-10-02T14:02:57.263+00:00
-"__v": 0
+"createdAt": "2025-10-02T14:02:57.263+00:00"
+"updatedAt": "2025-10-02T14:02:57.263+00:00"
+"__v": "0"
 }
 ```
 
